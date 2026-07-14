@@ -11,7 +11,7 @@ function Sidebar() {
   ];
 
   return (
-    <aside>
+    <aside class="sidebar">
       <h2>CampusHub</h2>
 
       <ul>

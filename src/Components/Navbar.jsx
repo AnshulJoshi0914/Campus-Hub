@@ -1,11 +1,11 @@
 function Navbar(){
     return(
-        <nav>
+        <nav className="navbar">
             <div>
                 <h2>Campus Hub</h2>
             </div>
 
-            <div>
+            <div className="search-bar">
                 <input type="text" placeholder="Search Students..."/>
             </div>
             <div>

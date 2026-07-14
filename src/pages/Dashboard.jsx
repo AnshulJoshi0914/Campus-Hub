@@ -1,6 +1,7 @@
 import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
 import DashboardCard from "../Components/DashboardCard";
+import "../Styles/Dashboard.css";
 function Dashboard(){return(<>
     <Navbar />
 
@@ -9,7 +10,7 @@ function Dashboard(){return(<>
 
         <main className="main-content">
             <h1 className="Dashboard-title">Dashboard</h1>
-            <div className="cards-title">
+            <div className="cards-grid">
                 <DashboardCard title="Total Students" value="250"/>
                 <DashboardCard title="Present Students" value="220"/>
                 <DashboardCard title="Absent Students" value="30"/>
