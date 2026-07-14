@@ -1,0 +1,78 @@
+.attendance-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:20px;
+}
+
+.attendance-search{
+
+    width:300px;
+
+    padding:10px;
+
+    margin-bottom:20px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+}
+
+.attendance-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:white;
+
+    border-radius:10px;
+
+    overflow:hidden;
+
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.attendance-table th{
+
+    background:#1e293b;
+
+    color:white;
+
+    padding:15px;
+}
+
+.attendance-table td{
+
+    padding:25px;
+    border-bottom:1px solid #ddd;
+}
+
+.attendance-table tr:hover{
+
+    background:#f8fafc;
+}
+
+.save-btn{
+
+    background:#2563eb;
+
+    color:white;
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:6px;
+
+    cursor:pointer;
+}
+
+.empty_span{
+    margin-left:20px;
+    margin-right:20px;
+}
