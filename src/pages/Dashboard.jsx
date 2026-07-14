@@ -1,7 +1,7 @@
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
-import DashboardCard from "../components/DashboardCard";
-function Dashboard(){<>
+import Navbar from "../Components/Navbar";
+import Sidebar from "../Components/Sidebar";
+import DashboardCard from "../Components/DashboardCard";
+function Dashboard(){return(<>
     <Navbar />
 
     <div className="dashboard-container">
@@ -32,7 +32,7 @@ function Dashboard(){<>
             </div>
         </main>
     </div>
-</>
+</>);
 };
 
 export default Dashboard;

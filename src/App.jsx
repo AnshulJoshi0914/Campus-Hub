@@ -5,13 +5,17 @@ import Attendance from "./pages/Attendance"
 import {BrowserRouter,Route,Routes} from "react-router-dom";
 
 function App(){
-    return( <BrowserRouter>
-    <Routes>
-        <Route path="/" element={Dashboard}/>
-        <Route path="/Student" element={Students}/>
-        <Route path="/Attendance" element={Attendance}/>
-        </Routes></BrowserRouter>
+    return( 
+        <>
+    <BrowserRouter>
+     <Routes>
+        <Route path="/" element={<Dashboard/>}/>
+        <Route path="/Student" element={<Students/>}/>
+        <Route path="/Attendance" element={<Attendance/>}/>
+     </Routes>
+    </BrowserRouter>
+     </>   
     );
 }
 
-export default App
+export default App;
