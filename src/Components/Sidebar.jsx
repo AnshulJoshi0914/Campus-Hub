@@ -6,7 +6,7 @@ import {
   FaClipboardCheck,
   FaBuilding,
   FaCog,
-  FaSignOutAlt,
+  FaSignInAlt,
 } from "react-icons/fa";
 function Sidebar() {
   const menuItems = [
@@ -15,7 +15,7 @@ function Sidebar() {
   { name: "Attendance", path: "/attendance", icon: <FaClipboardCheck /> },
   { name: "Departments", path: "/departments", icon: <FaBuilding /> },
   { name: "Settings", path: "/settings", icon: <FaCog /> },
-  { name: "Logout", path: "/logout", icon: <FaSignOutAlt /> },
+  { name: "Login", path: "/login", icon: <FaSignInAlt /> },
 ];
 
   return (
