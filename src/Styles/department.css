@@ -1,0 +1,68 @@
+.department-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.department-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:25px;
+}
+
+.dept-card{
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    transition:.3s;
+}
+
+.dept-card:hover{
+    transform:translateY(-5px);
+}
+
+.dept-card h2{
+    margin-bottom:20px;
+    color:#1e293b;
+}
+
+.dept-card p{
+    margin:10px 0;
+    color:#555;
+}
+
+.department-actions{
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+}
+
+.dep-btn{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.department-form{
+    width:450px;
+    background:white;
+    padding:30px;
+    border-radius:12px;
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
