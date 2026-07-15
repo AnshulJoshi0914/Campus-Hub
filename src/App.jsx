@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import Students from "./pages/Student"
 import Attendance from "./pages/Attendance"
 import Department from "./pages/Departments";
+import Settings from "./pages/Settings";
 import {BrowserRouter,Route,Routes} from "react-router-dom";
 
 function App(){
@@ -14,6 +15,7 @@ function App(){
         <Route path="/Student" element={<Students/>}/>
         <Route path="/Attendance" element={<Attendance/>}/>
         <Route path="/Departments" element={<Department/>}/>
+        <Route path="/Settings" element={<Settings/>}/>
      </Routes>
     </BrowserRouter>
      </>   
