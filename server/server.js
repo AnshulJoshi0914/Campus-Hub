@@ -8,7 +8,9 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 const studentRoutes = require("./routes/studentRoutes");
+const departmentRoutes = require("./routes/departmentRoutes");
 app.use("/api/Students", studentRoutes);
+app.use("/api/departments", departmentRoutes);
 app.get("/",(req,res)=>{
     res.send("Backend Server is running.")
 });
