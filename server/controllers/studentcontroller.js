@@ -1,6 +1,4 @@
 const Student = require("../models/Students");
-
-// Create Student
 const createStudent = async (req, res) => {
     try {
         const student = await Student.create(req.body);
@@ -21,8 +19,6 @@ const createStudent = async (req, res) => {
         });
     }
 };
-
-// Get All Students
 const getStudents = async (req, res) => {
     try {
         const students = await Student.find();

@@ -1,3 +1,4 @@
+
 const express = require('express');
 const cors=require('cors');
 const dotenv=require("dotenv");
@@ -9,8 +10,10 @@ app.use(cors());
 app.use(express.json());
 const studentRoutes = require("./routes/studentRoutes");
 const departmentRoutes = require("./routes/departmentRoutes");
+const attendanceRoutes = require("./routes/attendanceRoutes");
 app.use("/api/Students", studentRoutes);
 app.use("/api/departments", departmentRoutes);
+app.use("/api/attendance", attendanceRoutes);
 app.get("/",(req,res)=>{
     res.send("Backend Server is running.")
 });
