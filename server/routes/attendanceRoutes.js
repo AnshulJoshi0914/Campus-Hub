@@ -1,5 +1,5 @@
 const express = require("express");
-
+const authMiddleware = require("../middlewares/authMiddleware");
 const {
   getAttendance,
   updateAttendance,
@@ -9,9 +9,9 @@ const {
 
 const router = express.Router();
 
-router.post("/", markOrUpdateAttendance);
-router.get("/", getAttendance);
-router.put("/:id", updateAttendance);
-router.delete("/:id", deleteAttendance);
+router.post("/", authMiddleware, markOrUpdateAttendance);
+router.get("/", authMiddleware, getAttendance);
+router.put("/:id", authMiddleware, updateAttendance);
+router.delete("/:id", authMiddleware, deleteAttendance);
 
 module.exports = router;
