@@ -1,52 +1,151 @@
 import Navbar from "../Components/Navbar";
 import Sidebar from "../Components/Sidebar";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import API from "../api/Studentapi";
 import "../Styles/Student.css";
+
 function Students() {
   const [showform, setshowform] = useState(false);
-  const students = [
-    {
-      id: 1,
-      name: "Shivam Dube",
-      roll: "CSE001",
-      department: "CSE",
-      year: 4,
-    },
-    {
-      id: 2,
-      name: "Harshit Rana",
-      roll: "ECE002",
-      department: "ECE",
-      year: 4,
-    },
-    {
-      id: 3,
-      name: "Samuel Johnson",
-      roll: "CSE003",
-      department: "CSE",
-      year: 4,
-    },
-  ];
+  const [editingId, setEditingId] = useState(null);
+  const [students, setStudents] = useState([]);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    rollNo: "",
+    department: "",
+    year: "",
+    email: "",
+    phone: "",
+  });
+
+  const fetchStudents = async () => {
+    try {
+      const res = await API.get("/");
+      setStudents(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
   function toggle() {
     setshowform((prev) => !prev);
   }
+  const handleEdit = (student) => {
+    setFormData({
+      name: student.name,
+      rollNo: student.rollNo,
+      email: student.email,
+      department: student.department,
+      year: student.year,
+      phone: student.phone,
+    });
+
+    setEditingId(student._id);
+    setshowform(true);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this student?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      if (editingId) {
+        await API.put(`/${editingId}`, formData);
+        alert("Student Updated Successfully!");
+      } else {
+        await API.post("/", formData);
+        alert("Student Added Successfully!");
+      }
+
+      fetchStudents();
+
+      setEditingId(null);
+      setshowform(false);
+
+      setFormData({
+        name: "",
+        rollNo: "",
+        department: "",
+        year: "",
+        email: "",
+        phone: "",
+      });
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong.");
+    }
+  };
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (editingId) {
+        await API.put(`/${editingId}`, formData);
+      } else {
+        await API.post("/", formData);
+      }
+
+      alert("Student Added Successfully!");
+
+      fetchStudents();
+
+      setshowform(false);
+
+      setFormData({
+        name: "",
+        rollNo: "",
+        department: "",
+        year: "",
+        email: "",
+        phone: "",
+      });
+      setEditingId(null);
+      setshowform(false);
+
+      fetchStudents();
+    } catch (error) {
+      console.log(error);
+      alert("Error adding student");
+    }
+  };
+
   return (
     <>
       <Navbar />
+
       <div className="dashboard-container">
         <Sidebar />
+
         <main className="main-content">
           <h1 className="page-title">Students</h1>
+
           <div className="student-header">
             <input
               type="text"
               placeholder="Search Student..."
               className="student-search"
             />
+
             <button className="add-student-btn" onClick={toggle}>
-              +Add Student
+              + Add Student
             </button>
           </div>
+
           <table className="student-table">
             <thead>
               <tr>
@@ -54,19 +153,44 @@ function Students() {
                 <th>Roll No</th>
                 <th>Department</th>
                 <th>Year</th>
+                <th>Email</th>
+                <th>Phone No</th>
                 <th>Actions</th>
               </tr>
             </thead>
+
             <tbody>
               {students.map((student) => (
-                <tr key={student.id}>
+                <tr key={student._id}>
                   <td>{student.name}</td>
-                  <td>{student.roll}</td>
+                  <td>{student.rollNo}</td>
                   <td>{student.department}</td>
                   <td>{student.year}</td>
+                  <td>{student.email}</td>
+                  <td>{student.phone}</td>
+
                   <td>
-                    <button className="edit-btn">Edit</button>
-                    <button className="delete-btn">Delete</button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(student._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                  <td>
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(student)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(student._id)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -74,49 +198,82 @@ function Students() {
           </table>
         </main>
       </div>
+
       {showform && (
         <div className="modal-overlay">
-          <div className="std-form">
-            <h2>Add Student</h2>
+          <form className="std-form" onSubmit={handleSubmit}>
+            <h2>{editingId ? "Edit Student" : "Add Student"}</h2>
 
             <div className="input-group">
               <label>Name</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Roll Number</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="rollNo"
+                value={formData.rollNo}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Department</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="department"
+                value={formData.department}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Year</label>
-              <input type="number" />
+              <input
+                type="number"
+                name="year"
+                value={formData.year}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Email</label>
-              <input type="email" />
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="input-group">
               <label>Phone Number</label>
-              <input type="text" />
+              <input
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="form-buttons">
-              <button className="cancel-btn" onClick={toggle}>
+              <button type="button" className="cancel-btn" onClick={toggle}>
                 Cancel
               </button>
 
-              <button className="save-btn">Save Student</button>
+              <button type="submit" className="save-btn">
+                {editingId ? "Update Student" : "Save Student"}
+              </button>
             </div>
-          </div>
+          </form>
         </div>
       )}
     </>
