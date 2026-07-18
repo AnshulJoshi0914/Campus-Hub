@@ -8,7 +8,7 @@ function Students() {
   const [showform, setshowform] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [students, setStudents] = useState([]);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     rollNo: "",
@@ -56,30 +56,14 @@ function Students() {
     if (!confirmDelete) return;
 
     try {
-      if (editingId) {
-        await API.put(`/${editingId}`, formData);
-        alert("Student Updated Successfully!");
-      } else {
-        await API.post("/", formData);
-        alert("Student Added Successfully!");
-      }
+      await API.delete(`/${id}`);
+
+      alert("Student Deleted Successfully!");
 
       fetchStudents();
-
-      setEditingId(null);
-      setshowform(false);
-
-      setFormData({
-        name: "",
-        rollNo: "",
-        department: "",
-        year: "",
-        email: "",
-        phone: "",
-      });
     } catch (error) {
       console.log(error);
-      alert("Something went wrong.");
+      alert("Failed to delete student.");
     }
   };
 
@@ -124,6 +108,18 @@ function Students() {
     }
   };
 
+  const filteredStudents = students.filter((student) => {
+  const search = searchTerm.toLowerCase();
+
+  return (
+    (student.name || "").toLowerCase().includes(search) ||
+    (student.rollNo || "").toLowerCase().includes(search) ||
+    (student.department || "").toLowerCase().includes(search) ||
+    (student.email || "").toLowerCase().includes(search) ||
+    (student.phone || "").includes(search) ||
+    String(student.year).includes(search)
+  );
+});
   return (
     <>
       <Navbar />
@@ -139,6 +135,8 @@ function Students() {
               type="text"
               placeholder="Search Student..."
               className="student-search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
 
             <button className="add-student-btn" onClick={toggle}>
@@ -160,7 +158,7 @@ function Students() {
             </thead>
 
             <tbody>
-              {students.map((student) => (
+              {filteredStudents.map((student) => (
                 <tr key={student._id}>
                   <td>{student.name}</td>
                   <td>{student.rollNo}</td>
@@ -168,15 +166,6 @@ function Students() {
                   <td>{student.year}</td>
                   <td>{student.email}</td>
                   <td>{student.phone}</td>
-
-                  <td>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(student._id)}
-                    >
-                      Delete
-                    </button>
-                  </td>
                   <td>
                     <button
                       className="edit-btn"
