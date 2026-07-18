@@ -5,6 +5,7 @@ import Attendance from "./pages/Attendance"
 import Department from "./pages/Departments";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login"
+import AttendanceHistory from "./pages/AttendanceHistory";
 import {BrowserRouter,Route,Routes} from "react-router-dom";
 
 function App(){
@@ -18,6 +19,7 @@ function App(){
         <Route path="/Departments" element={<Department/>}/>
         <Route path="/Settings" element={<Settings/>}/>
         <Route path="/Login" element={<Login/>}/>
+        <Route path="/AttendanceHistory" element={<AttendanceHistory />} />
      </Routes>
     </BrowserRouter>
      </>   

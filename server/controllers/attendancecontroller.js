@@ -17,7 +17,9 @@ const markAttendance = async (req, res) => {
 };
 const getAttendance = async (req, res) => {
   try {
-    const attendance = await Attendance.find().populate("student");
+    const attendance = await Attendance.find()
+  .populate("student")
+  .sort({ date: -1 });
 
     res.status(200).json({
       success: true,

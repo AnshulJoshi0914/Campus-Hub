@@ -225,6 +225,17 @@ function Students() {
             </div>
 
             <div className="input-group">
+              <label>Student Name</label>
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="input-group">
               <label>Roll Number</label>
               <input
                 type="text"
