@@ -67,9 +67,38 @@ const deleteAttendance = async (req, res) => {
   }
 };
 
+const markOrUpdateAttendance = async (req, res) => {
+  try {
+    const { student, date, status } = req.body;
+
+    let attendance = await Attendance.findOne({ student, date });
+
+    if (attendance) {
+      attendance.status = status;
+      await attendance.save();
+    } else {
+      attendance = await Attendance.create({
+        student,
+        date,
+        status,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: attendance,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
-  markAttendance,
   getAttendance,
   updateAttendance,
   deleteAttendance,
+  markOrUpdateAttendance,
 };

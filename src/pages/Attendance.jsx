@@ -33,6 +33,25 @@ function Attendance() {
     );
   };
 
+  const handleSaveAttendance = async () => {
+    try {
+      const today = new Date().toISOString().split("T")[0];
+
+      for (const student of attendance) {
+        await AAPI.post("/", {
+          student: student._id,
+          date: today,
+          status: student.status,
+        });
+      }
+
+      alert("Attendance Saved Successfully!");
+    } catch (error) {
+      console.log(error);
+      alert("Failed to save attendance.");
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -41,7 +60,9 @@ function Attendance() {
         <main className="main-content">
           <div className="attendance-header">
             <h1>Attendance</h1>
-            <button classanme="save-btn">Save Attendance</button>
+            <button className="save-btn" onClick={handleSaveAttendance}>
+              Save Attendance
+            </button>
           </div>
           <input
             type="text"
