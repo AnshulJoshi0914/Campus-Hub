@@ -11,9 +11,11 @@ app.use(express.json());
 const studentRoutes = require("./routes/studentRoutes");
 const departmentRoutes = require("./routes/departmentRoutes");
 const attendanceRoutes = require("./routes/attendanceRoutes");
+const authRoutes = require("./routes/authRoutes");
 app.use("/api/Students", studentRoutes);
 app.use("/api/departments", departmentRoutes);
 app.use("/api/attendance", attendanceRoutes);
+app.use("/api/auth", authRoutes);
 app.get("/",(req,res)=>{
     res.send("Backend Server is running.")
 });
