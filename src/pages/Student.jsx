@@ -3,12 +3,13 @@ import Sidebar from "../Components/Sidebar";
 import React, { useState, useEffect } from "react";
 import API from "../api/Studentapi";
 import "../Styles/Student.css";
-
+import DAPI from "../api/Departmentapi";
 function Students() {
   const [showform, setshowform] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [students, setStudents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [departments, setDepartments] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     rollNo: "",
@@ -27,8 +28,19 @@ function Students() {
     }
   };
 
+  const fetchDepartments = async () => {
+    try {
+      const res = await DAPI.get("/");
+      console.log(res.data);
+      setDepartments(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchStudents();
+    fetchDepartments();
   }, []);
 
   function toggle() {
@@ -109,17 +121,18 @@ function Students() {
   };
 
   const filteredStudents = students.filter((student) => {
-  const search = searchTerm.toLowerCase();
+    const search = searchTerm.toLowerCase();
 
-  return (
-    (student.name || "").toLowerCase().includes(search) ||
-    (student.rollNo || "").toLowerCase().includes(search) ||
-    (student.department || "").toLowerCase().includes(search) ||
-    (student.email || "").toLowerCase().includes(search) ||
-    (student.phone || "").includes(search) ||
-    String(student.year).includes(search)
-  );
-});
+    return (
+      (student.name || "").toLowerCase().includes(search) ||
+      (student.rollNo || "").toLowerCase().includes(search) ||
+      (student.department || "").toLowerCase().includes(search) ||
+      (student.email || "").toLowerCase().includes(search) ||
+      (student.phone || "").includes(search) ||
+      String(student.year).includes(search)
+    );
+  });
+
   return (
     <>
       <Navbar />
@@ -194,13 +207,21 @@ function Students() {
             <h2>{editingId ? "Edit Student" : "Add Student"}</h2>
 
             <div className="input-group">
-              <label>Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
+              <label>Department</label>
+
+              <select
+                name="department"
+                value={formData.department}
                 onChange={handleChange}
-              />
+              >
+                <option value="">Select Department</option>
+
+                {departments.map((department) => (
+                  <option key={department._id} value={department.code}>
+                    {department.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="input-group">

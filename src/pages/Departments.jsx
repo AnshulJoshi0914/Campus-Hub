@@ -7,9 +7,8 @@ import API from "../api/Departmentapi";
 function Department() {
   const [showform, setshowform] = useState(false);
   const [editingId, setEditingId] = useState(null);
-
   const [departments, setDepartments] = useState([]);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     code: "",
@@ -66,6 +65,47 @@ function Department() {
     }
   };
 
+  const handleEdit = (department) => {
+    setFormData({
+      name: department.name,
+      code: department.code,
+      hod: department.hod,
+      description: department.description,
+    });
+
+    setEditingId(department._id);
+    setshowform(true);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this department?",
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await API.delete(`/${id}`);
+
+      alert("Department Deleted Successfully!");
+
+      fetchDepartments();
+    } catch (error) {
+      console.log(error);
+      alert("Failed to delete department.");
+    }
+  };
+
+  const filteredDepartments = departments.filter((department) => {
+    const search = searchTerm.toLowerCase();
+
+    return (
+      (department.name || "").toLowerCase().includes(search) ||
+      (department.code || "").toLowerCase().includes(search) ||
+      (department.hod || "").toLowerCase().includes(search)
+    );
+  });
+
   return (
     <>
       <Navbar />
@@ -77,16 +117,26 @@ function Department() {
           <div className="department-header">
             <h1 className="page-title">Departments</h1>
 
+            <input
+              type="text"
+              placeholder="Search Department..."
+              className="student-search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+
             <button
               className="dep-btn"
-              onClick={() => setshowform(true)}
+              onClick={() => {
+                setshowform(true);
+              }}
             >
               + Add Department
             </button>
           </div>
 
           <div className="department-grid">
-            {departments.map((department) => (
+            {filteredDepartments.map((department) => (
               <div className="dept-card" key={department._id}>
                 <h2>{department.name}</h2>
 
@@ -99,16 +149,21 @@ function Department() {
                 </p>
 
                 <p>
-                  <strong>Description:</strong>{" "}
-                  {department.description}
+                  <strong>Description:</strong> {department.description}
                 </p>
 
                 <div className="department-actions">
-                  <button className="edit-btn">
+                  <button
+                    className="edit-btn"
+                    onClick={() => handleEdit(department)}
+                  >
                     Edit
                   </button>
 
-                  <button className="delete-btn">
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(department._id)}
+                  >
                     Delete
                   </button>
                 </div>
@@ -118,15 +173,8 @@ function Department() {
 
           {showform && (
             <div className="modal-overlay">
-              <form
-                className="department-form"
-                onSubmit={handleSubmit}
-              >
-                <h2>
-                  {editingId
-                    ? "Edit Department"
-                    : "Add Department"}
-                </h2>
+              <form className="department-form" onSubmit={handleSubmit}>
+                <h2>{editingId ? "Edit Department" : "Add Department"}</h2>
 
                 <div className="input-group">
                   <label>Department Name</label>
@@ -184,13 +232,8 @@ function Department() {
                     Cancel
                   </button>
 
-                  <button
-                    type="submit"
-                    className="save-btn"
-                  >
-                    {editingId
-                      ? "Update Department"
-                      : "Save Department"}
+                  <button type="submit" className="save-btn">
+                    {editingId ? "Update Department" : "Save Department"}
                   </button>
                 </div>
               </form>
