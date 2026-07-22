@@ -1,71 +1,100 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
+import { useState } from "react";
+import AuthAPI from "../api/Authapi";
 
 function Login() {
-    return (
-        <div className="login-page">
+  const navigate = useNavigate();
 
-            <div className="login-card">
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-                <h1 className="logo">
-                    🎓 CampusHub
-                </h1>
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-                <p className="subtitle">
-                    College Management System
-                </p>
+  const handleLogin = async (e) => {
+  e.preventDefault();
 
-                <h2>
-                    Welcome Back!
-                </h2>
+  console.log("Submitting:", formData);
 
-                <p className="login-text">
-                    Login to your account
-                </p>
+  try {
+    const res = await AuthAPI.post("/login", formData);
 
-                <div className="input-group">
+    console.log("Login Response:", res.data);
 
-                    <label>Email</label>
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("admin", JSON.stringify(res.data.admin));
 
-                    <input
-                        type="email"
-                        placeholder="Enter your email"
-                    />
+    console.log("Saved Token:", localStorage.getItem("token"));
 
-                </div>
+    alert("Login Successful");
 
-                <div className="input-group">
+    navigate("/dashboard");
+  } catch (error) {
+    console.log("Login Error:", error.response?.data);
 
-                    <label>Password</label>
+    alert(error.response?.data?.message || "Login Failed");
+  }
+};
 
-                    <input
-                        type="password"
-                        placeholder="Enter your password"
-                    />
+  return (
+    <div className="login-page">
+      <form className="login-card" onSubmit={handleLogin}>
+        <h1 className="logo">🎓 CampusHub</h1>
 
-                </div>
+        <p className="subtitle">College Management System</p>
 
-                <div className="login-options">
+        <h2>Welcome Back!</h2>
 
-                    <label>
-                        <input type="checkbox" />
-                        Remember Me
-                    </label>
+        <p className="login-text">Login to your account</p>
 
-                    <Link to="/">
-                        Forgot Password?
-                    </Link>
+        <div className="input-group">
+          <label>Email</label>
 
-                </div>
-
-                <button className="login-btn">
-                    Login
-                </button>
-
-            </div>
-
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
         </div>
-    );
+
+        <div className="input-group">
+          <label>Password</label>
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter your password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="login-options">
+          <label>
+            <input type="checkbox" />
+            Remember Me
+          </label>
+
+          <Link to="/">Forgot Password?</Link>
+        </div>
+
+        <button type="submit" className="login-btn">
+          Login
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default Login;

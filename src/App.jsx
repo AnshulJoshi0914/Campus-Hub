@@ -1,29 +1,26 @@
-import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
-import Students from "./pages/Student"
-import Attendance from "./pages/Attendance"
+import Students from "./pages/Student";
+import Attendance from "./pages/Attendance";
 import Department from "./pages/Departments";
 import Settings from "./pages/Settings";
-import Login from "./pages/Login"
+import Login from "./pages/Login";
 import AttendanceHistory from "./pages/AttendanceHistory";
-import {BrowserRouter,Route,Routes} from "react-router-dom";
 
-function App(){
-    return( 
-        <>
+function App() {
+  return (
     <BrowserRouter>
-     <Routes>
-        <Route path="/" element={<Dashboard/>}/>
-        <Route path="/Student" element={<Students/>}/>
-        <Route path="/Attendance" element={<Attendance/>}/>
-        <Route path="/Departments" element={<Department/>}/>
-        <Route path="/Settings" element={<Settings/>}/>
-        <Route path="/Login" element={<Login/>}/>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/Student" element={<Students />} />
+        <Route path="/Attendance" element={<Attendance />} />
+        <Route path="/Departments" element={<Department />} />
+        <Route path="/Settings" element={<Settings />} />
         <Route path="/AttendanceHistory" element={<AttendanceHistory />} />
-     </Routes>
+      </Routes>
     </BrowserRouter>
-     </>   
-    );
+  );
 }
 
 export default App;
